@@ -1,0 +1,20 @@
+{
+  // Formatting
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // File Nesting
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "package.json": ".cursorrules, .eslintrc.json, .gitignore, .prettierrc.json, .yarnrc.yml, readme.md, run.bat, tsconfig.json, yarn.lock",
+    "next.config.ts": "components.json, next-env.d.ts, nextauth.d.ts, postcss.config.mjs, tailwind.config.ts, tailwind.d.ts, vercel.json",
+    ".env": ".env*"
+  },
+
+  // Search Exclude
+  "search.exclude": {
+    ".yarn": true,
+    ".next": true,
+    "yarn.lock": true,
+    "node_modules": true
+  }
+}

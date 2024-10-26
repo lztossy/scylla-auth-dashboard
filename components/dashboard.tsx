@@ -1,67 +1,97 @@
-"use client"
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Progress } from "@/components/ui/progress"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { LoaderScreen } from "@/components/loader-screen"
-import { GenerateInviteModal } from "@/components/generate-invite-modal"
-import { TrackerDashboard } from "@/components/tracker-dashboard"
-import { RevokeInviteModal } from "@/components/revoke-invite-modal"
-import { HardwareResetModal } from "@/components/hardware-reset-modal"
-import { AccountResetModal } from "@/components/account-reset-modal"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import {
+  DialogDescription,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Dialog,
+} from "@/components/ui/dialog";
+import {
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Card,
+} from "@/components/ui/card";
+import { GenerateInviteModal } from "@/components/generate-invite-modal";
+import { HardwareResetModal } from "@/components/hardware-reset-modal";
+import { RevokeInviteModal } from "@/components/revoke-invite-modal";
+import { AccountResetModal } from "@/components/account-reset-modal";
+import { TrackerDashboard } from "@/components/tracker-dashboard";
+import { LoaderScreen } from "@/components/loader-screen";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function Dashboard() {
-  const [showLoader, setShowLoader] = useState(false)
-  const [inviteCount, setInviteCount] = useState(3)
-  const [showGenerateInvite, setShowGenerateInvite] = useState(false)
-  const [showRevokeInvite, setShowRevokeInvite] = useState(false)
-  const [showTrackerDashboard, setShowTrackerDashboard] = useState(false)
-  const [showHardwareReset, setShowHardwareReset] = useState(false)
-  const [showAccountReset, setShowAccountReset] = useState(false)
-  const router = useRouter()
-  const supabase = createClientComponentClient()
+  const [showLoader, setShowLoader] = useState(false);
+  const [inviteCount, setInviteCount] = useState(3);
+  const [showGenerateInvite, setShowGenerateInvite] = useState(false);
+  const [showRevokeInvite, setShowRevokeInvite] = useState(false);
+  const [showTrackerDashboard, setShowTrackerDashboard] = useState(false);
+  const [showHardwareReset, setShowHardwareReset] = useState(false);
+  const [showAccountReset, setShowAccountReset] = useState(false);
+  const supabase = createClient();
+  const router = useRouter();
 
   const handleDownloadLoader = () => {
-    setShowLoader(true)
-    setTimeout(() => setShowLoader(false), 5000)
-  }
+    setShowLoader(true);
+    setTimeout(() => setShowLoader(false), 5000);
+  };
 
   const getInviteCountColor = (count: number) => {
-    if (count >= 3) return "text-green-500"
-    if (count > 0) return "text-yellow-500"
-    return "text-red-500"
-  }
+    if (count >= 3) return "text-green-500";
+    if (count > 0) return "text-yellow-500";
+    return "text-red-500";
+  };
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/auth')
-  }
+    await supabase.auth.signOut();
+    router.push("/auth");
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Scylla Dashboard Account Management</h1>
+          <h1 className="text-3xl font-bold">
+            Scylla Dashboard Account Management
+          </h1>
+
           <div className="flex items-center gap-4">
             <ThemeToggle />
+
             <Button onClick={handleSignOut}>Sign Out</Button>
           </div>
         </div>
+
         <p className="text-sm text-muted-foreground mb-8">
-          You're logged in with account id 4acng********************************
+          You're logged in with account id
+          <span className="font-mono ml-1">
+            4acng********************************
+          </span>
         </p>
-        
+
         <div className="grid gap-6 md:grid-cols-2">
-          <ActivationCard title="Activation Key" type="Fortnite" onDownloadLoader={handleDownloadLoader} />
-          <ActivationCard title="Activation Key" type="Valorant" onDownloadLoader={handleDownloadLoader} />
+          <ActivationCard
+            title="Activation Key"
+            type="Fortnite"
+            onDownloadLoader={handleDownloadLoader}
+          />
+
+          <ActivationCard
+            title="Activation Key"
+            type="Valorant"
+            onDownloadLoader={handleDownloadLoader}
+          />
         </div>
-        
+
         <div className="grid gap-6 md:grid-cols-2 mt-6">
           <Card>
             <CardHeader>
@@ -70,10 +100,30 @@ export default function Dashboard() {
                 Remaining invites: {inviteCount}
               </p>
             </CardHeader>
+
             <CardContent className="space-y-4">
-              <Button className="w-full" onClick={() => setShowGenerateInvite(true)}>Generate Invite</Button>
-              <Button variant="secondary" className="w-full" onClick={() => setShowTrackerDashboard(true)}>Tracker Dashboard</Button>
-              <Button variant="secondary" className="w-full" onClick={() => setShowRevokeInvite(true)}>Revoke Invite</Button>
+              <Button
+                className="w-full"
+                onClick={() => setShowGenerateInvite(true)}
+              >
+                Generate Invite
+              </Button>
+
+              <Button
+                variant="secondary"
+                className="w-full"
+                onClick={() => setShowTrackerDashboard(true)}
+              >
+                Tracker Dashboard
+              </Button>
+
+              <Button
+                variant="secondary"
+                className="w-full"
+                onClick={() => setShowRevokeInvite(true)}
+              >
+                Revoke Invite
+              </Button>
             </CardContent>
           </Card>
 
@@ -81,28 +131,46 @@ export default function Dashboard() {
             <CardHeader>
               <CardTitle>Account Settings</CardTitle>
             </CardHeader>
+
             <CardContent className="space-y-4">
-              <Button className="w-full" onClick={() => setShowHardwareReset(true)}>Hardware Reset</Button>
-              <Button variant="secondary" className="w-full" onClick={() => setShowAccountReset(true)}>Account Reset</Button>
-              <Button variant="secondary" className="w-full">Switch Sub (extra €15)</Button>
+              <Button
+                className="w-full"
+                onClick={() => setShowHardwareReset(true)}
+              >
+                Hardware Reset
+              </Button>
+
+              <Button
+                variant="secondary"
+                className="w-full"
+                onClick={() => setShowAccountReset(true)}
+              >
+                Account Reset
+              </Button>
+
+              <Button variant="secondary" className="w-full">
+                Switch Sub (extra €15)
+              </Button>
             </CardContent>
           </Card>
         </div>
-        
+
         <div className="grid gap-6 md:grid-cols-2 mt-6">
           <Card>
             <CardHeader>
               <CardTitle>Web Interface</CardTitle>
             </CardHeader>
+
             <CardFooter>
               <Button variant="secondary">Check Back Soon</Button>
             </CardFooter>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Community Discord</CardTitle>
             </CardHeader>
+
             <CardFooter className="flex gap-2">
               <Button>Join</Button>
               <Button variant="outline">Update Role</Button>
@@ -112,13 +180,32 @@ export default function Dashboard() {
       </main>
 
       {showLoader && <LoaderScreen onComplete={() => setShowLoader(false)} />}
-      <GenerateInviteModal isOpen={showGenerateInvite} onClose={() => setShowGenerateInvite(false)} />
-      <RevokeInviteModal isOpen={showRevokeInvite} onClose={() => setShowRevokeInvite(false)} />
-      <HardwareResetModal isOpen={showHardwareReset} onClose={() => setShowHardwareReset(false)} />
-      <AccountResetModal isOpen={showAccountReset} onClose={() => setShowAccountReset(false)} />
-      
+
+      <GenerateInviteModal
+        isOpen={showGenerateInvite}
+        onClose={() => setShowGenerateInvite(false)}
+      />
+
+      <RevokeInviteModal
+        isOpen={showRevokeInvite}
+        onClose={() => setShowRevokeInvite(false)}
+      />
+
+      <HardwareResetModal
+        isOpen={showHardwareReset}
+        onClose={() => setShowHardwareReset(false)}
+      />
+
+      <AccountResetModal
+        isOpen={showAccountReset}
+        onClose={() => setShowAccountReset(false)}
+      />
+
       {showTrackerDashboard && (
-        <Dialog open={showTrackerDashboard} onOpenChange={() => setShowTrackerDashboard(false)}>
+        <Dialog
+          open={showTrackerDashboard}
+          onOpenChange={() => setShowTrackerDashboard(false)}
+        >
           <DialogContent className="sm:max-w-[800px]">
             <DialogHeader>
               <DialogTitle>Tracker Dashboard</DialogTitle>
@@ -131,20 +218,32 @@ export default function Dashboard() {
         </Dialog>
       )}
     </div>
-  )
+  );
 }
 
-function ActivationCard({ title, type, onDownloadLoader }: { title: string; type: string; onDownloadLoader: () => void }) {
+function ActivationCard({
+  title,
+  type,
+  onDownloadLoader,
+}: {
+  title: string;
+  type: string;
+  onDownloadLoader: () => void;
+}) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <p className="text-sm text-muted-foreground">Copy this to activate Scylla {type}</p>
+        <p className="text-sm text-muted-foreground">
+          Copy this to activate Scylla {type}
+        </p>
       </CardHeader>
       <CardContent className="space-y-4">
         <Input readOnly value="************************" />
         <div className="flex gap-2">
-          <Button variant="secondary" onClick={onDownloadLoader}>Download Loader</Button>
+          <Button variant="secondary" onClick={onDownloadLoader}>
+            Download Loader
+          </Button>
           <Button variant="secondary">Update License</Button>
         </div>
       </CardContent>
@@ -163,5 +262,5 @@ function ActivationCard({ title, type, onDownloadLoader }: { title: string; type
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
