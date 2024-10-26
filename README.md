@@ -5,7 +5,11 @@ A self-leak of the web dashboard / authentication panel of Scylla Internals.
 run.bat to launch the dev server, then redirect to the localhost in the console.
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project includes the following:
+
+1. Full Email registration Support using the `Supabase` Postgres DB
+2. Modals, elements, components for every button
+3. Well structured code for learning web-development
 
 ## Learn More
 
