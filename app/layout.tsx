@@ -1,40 +1,40 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
+import type { Metadata } from "next";
 
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { cn } from "@/lib/utils";
+
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Scylla Dashboard",
   description: "Account Management for Scylla",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+interface RootLayoutProps {
+  readonly children: React.ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
+      <body
+        suppressHydrationWarning
+        className={cn(
+          "select-text overscroll-none scroll-smooth font-sans antialiased",
+          GeistSans.variable,
+          GeistMono.variable
+        )}
+      >
         <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
           disableTransitionOnChange
+          defaultTheme="system"
+          attribute="class"
+          enableSystem
         >
-          {children}
+          <main>{children}</main>
         </ThemeProvider>
       </body>
     </html>
